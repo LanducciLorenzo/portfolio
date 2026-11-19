@@ -1,0 +1,81 @@
+{{ block title }}List {{ n_list }} of {{ n_total }}{{ endblock }}
+{{ block content }}
+<style>
+  #stage { font-size: 48px; text-align: center; min-height: 260px; margin-top: 40px; font-weight: 500; }
+  #stage img { max-height: 240px; max-width: 100%; }
+  .otree-timer { display: none !important; }
+</style>
+<div id="ready">
+  <p>Press <b>Start</b> when you are ready. Pay attention to every item.</p>
+  <button type="button" class="btn btn-primary" id="start">Start</button>
+</div>
+<div id="stage"></div>
+<input type="hidden" name="presentation_completed" id="id_presentation_completed" value="False">
+<input type="hidden" name="presentation_ms" id="id_presentation_ms" value="0">
+<input type="hidden" name="page_hidden_count" id="id_page_hidden_count" value="0">
+
+<script>
+(function () {
+  const words = js_vars.words;
+  const modality = js_vars.modality;
+  const wordMs = js_vars.word_ms;
+  const gapMs = js_vars.gap_ms;
+  const stage = document.getElementById('stage');
+  let hidden = 0;
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      hidden += 1;
+      document.getElementById('id_page_hidden_count').value = hidden;
+    }
+  });
+
+  // Pictures go in _static/drm_pictures/<word>.png ; if a picture is missing the word is shown instead
+  function showPicture(word) {
+    const img = new Image();
+    img.alt = word;
+    img.onerror = function () { stage.textContent = word; };
+    img.src = '/static/drm_pictures/' + word + '.png';
+    stage.innerHTML = '';
+    stage.appendChild(img);
+  }
+
+  function speak(word) {
+    if (!('speechSynthesis' in window)) { stage.textContent = word; return; }
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US';
+    u.rate = 0.9;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    stage.textContent = '🔊';
+  }
+
+  function present(word) {
+    if (modality === 'pictures') { showPicture(word); }
+    else if (modality === 'auditory_words') { speak(word); }
+    else { stage.textContent = word; }
+  }
+
+  function finish(t0) {
+    stage.textContent = '';
+    document.getElementById('id_presentation_completed').value = 'True';
+    document.getElementById('id_presentation_ms').value = Math.round(performance.now() - t0);
+    document.querySelector('form').submit();
+  }
+
+  function run(i, t0) {
+    if (i >= words.length) { finish(t0); return; }
+    present(words[i]);
+    setTimeout(function () {
+      stage.textContent = '';
+      setTimeout(function () { run(i + 1, t0); }, gapMs);
+    }, wordMs);
+  }
+
+  document.getElementById('start').addEventListener('click', function () {
+    document.getElementById('ready').style.display = 'none';
+    setTimeout(function () { run(0, performance.now()); }, 800);
+  });
+})();
+</script>
+{{ endblock }}

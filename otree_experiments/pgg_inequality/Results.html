@@ -1,0 +1,15 @@
+{{ block title }}Results of round {{ player.round_number }}{{ endblock }}
+{{ block content }}
+<p>You contributed <b>{{ player.contribution }}</b> points and kept <b>{{ kept }}</b>.</p>
+<p>Total group contribution: <b>{{ group.total_contribution }}</b>. Each member receives <b>{{ group.individual_share }}</b> from the group project.</p>
+<p>Your earnings this round: <b>{{ player.payoff }}</b>.</p>
+<p>Other members (endowment, contribution): {{ for e, c in others }}({{ e }}, {{ c }}) {{ endfor }}</p>
+<h5>Your history</h5>
+<table class="table table-sm">
+  <tr><th>Round</th><th>Endowment</th><th>Your contribution</th><th>Group total</th><th>Your earnings</th></tr>
+  {{ for h in history }}
+  <tr><td>{{ h.round }}</td><td>{{ h.endowment }}</td><td>{{ h.contribution }}</td><td>{{ h.group_total }}</td><td>{{ h.payoff }}</td></tr>
+  {{ endfor }}
+</table>
+{{ next_button }}
+{{ endblock }}

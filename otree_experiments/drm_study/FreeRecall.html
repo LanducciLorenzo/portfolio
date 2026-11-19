@@ -1,0 +1,13 @@
+{{ block title }}Write the words you remember{{ endblock }}
+{{ block content }}
+<p>Write all the words you remember from the list you just studied, in any order, separated by spaces or on separate lines.
+The page will continue automatically when the time is over.</p>
+{{ formfield 'recall_text' }}
+{{ next_button }}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const box = document.getElementById('id_recall_text');
+    if (box) { box.rows = 8; box.focus(); }
+  });
+</script>
+{{ endblock }}

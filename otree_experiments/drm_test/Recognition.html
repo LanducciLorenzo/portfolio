@@ -1,0 +1,100 @@
+{{ block title }}Memory test{{ endblock }}
+{{ block content }}
+<style>
+  #word { font-size: 48px; text-align: center; margin: 30px 0; min-height: 70px; }
+  .choice { min-width: 140px; margin: 6px; font-size: 20px; }
+  #conf button { min-width: 120px; margin: 4px; }
+  .otree-btn-next { display: none; }
+</style>
+<p>Was this word in the lists you studied? Answer <b>Old</b> if it was, <b>New</b> if it was not. Then say how confident you are.</p>
+<p class="text-muted" id="progress"></p>
+<div id="word">…</div>
+
+<div id="oldnew" class="text-center">
+  <button type="button" class="btn btn-primary choice" data-r="old">Old</button>
+  <button type="button" class="btn btn-primary choice" data-r="new">New</button>
+  <p class="text-muted"><small>Keyboard: F = Old, J = New</small></p>
+</div>
+
+<div id="conf" class="text-center" style="display:none">
+  <p>How confident are you?</p>
+  <button type="button" class="btn btn-outline-secondary" data-c="1">1 Guessing</button>
+  <button type="button" class="btn btn-outline-secondary" data-c="2">2 Not very sure</button>
+  <button type="button" class="btn btn-outline-secondary" data-c="3">3 Fairly sure</button>
+  <button type="button" class="btn btn-outline-secondary" data-c="4">4 Completely sure</button>
+  <p class="text-muted"><small>Keyboard: 1 2 3 4</small></p>
+</div>
+
+<div id="done" class="text-center" style="display:none">
+  <p>Test completed. Thank you!</p>
+</div>
+{{ next_button }}
+
+<script>
+  let current = null;      // item on screen
+  let onset = 0;           // when the word appeared
+  let rt = 0;
+  let response = null;
+  let waiting = false;     // true while an answer is being saved
+
+  function showStep(step) {
+    document.getElementById('oldnew').style.display = step === 'oldnew' ? 'block' : 'none';
+    document.getElementById('conf').style.display = step === 'conf' ? 'block' : 'none';
+  }
+
+  function liveRecv(data) {
+    waiting = false;
+    if (data.done) {
+      document.getElementById('word').textContent = '';
+      showStep('none');
+      document.getElementById('done').style.display = 'block';
+      document.querySelector('form').submit();
+      return;
+    }
+    current = data;
+    response = null;
+    document.getElementById('progress').textContent = 'Word ' + data.position + ' of ' + data.total;
+    const w = document.getElementById('word');
+    w.textContent = '';
+    showStep('none');
+    setTimeout(function () {       // short blank before each word
+      w.textContent = data.word;
+      onset = performance.now();
+      showStep('oldnew');
+    }, 400);
+  }
+
+  function chooseOldNew(r) {
+    if (!current || response !== null || waiting) return;
+    rt = Math.round(performance.now() - onset);
+    response = r;
+    showStep('conf');
+  }
+
+  function chooseConfidence(c) {
+    if (!current || response === null || waiting) return;
+    waiting = true;
+    showStep('none');
+    liveSend({type: 'answer', order: current.order, response: response, confidence: c, rt_ms: rt});
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.choice').forEach(function (b) {
+      b.addEventListener('click', function () { chooseOldNew(b.dataset.r); });
+    });
+    document.querySelectorAll('#conf button').forEach(function (b) {
+      b.addEventListener('click', function () { chooseConfidence(parseInt(b.dataset.c, 10)); });
+    });
+    document.addEventListener('keydown', function (e) {
+      const k = e.key.toLowerCase();
+      if (document.getElementById('oldnew').style.display === 'block') {
+        if (k === 'f') chooseOldNew('old');
+        if (k === 'j') chooseOldNew('new');
+      } else if (document.getElementById('conf').style.display === 'block') {
+        if (['1', '2', '3', '4'].includes(k)) chooseConfidence(parseInt(k, 10));
+      }
+    });
+    liveSend({type: 'load'});   // also resumes from the right item after a page refresh
+  });
+</script>
+{{ endblock }}

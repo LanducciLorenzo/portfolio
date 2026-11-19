@@ -1,0 +1,21 @@
+{{ block title }}Sound check{{ endblock }}
+{{ block content }}
+<p>In this study you will <b>hear</b> words. Please turn your sound on, then press the button below.</p>
+<p><button type="button" class="btn btn-secondary" id="play">Play test sound</button></p>
+<p id="nospeech" style="display:none;color:#b00">Your browser cannot play speech. Please use an up-to-date Chrome, Edge or Safari on a computer.</p>
+{{ formfields }}
+{{ next_button }}
+<script>
+document.getElementById('play').addEventListener('click', function () {
+  if (!('speechSynthesis' in window)) {
+    document.getElementById('nospeech').style.display = 'block';
+    return;
+  }
+  const u = new SpeechSynthesisUtterance('garden');
+  u.lang = 'en-US';
+  u.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+});
+</script>
+{{ endblock }}

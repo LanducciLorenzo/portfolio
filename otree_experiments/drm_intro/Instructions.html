@@ -1,0 +1,12 @@
+{{ block title }}Instructions{{ endblock }}
+{{ block content }}
+<p>You will {{ if is_auditory }}hear{{ else }}see{{ endif }} {{ n_lists }} lists of
+{{ if is_pictures }}pictures{{ else }}words{{ endif }}, one item at a time. Please pay attention and try to remember them.</p>
+{{ if free_recall }}
+<p>After each list you will have one minute to write down all the words you remember, in any order.</p>
+{{ endif }}
+<p>After all the lists, you will solve some simple arithmetic problems for two minutes.</p>
+<p>Finally, you will see a series of words. For each word, you will say whether it was in the lists (<b>old</b>) or not (<b>new</b>), and how confident you are.</p>
+<p>Please do not write anything down during the lists and do not leave this page during the study.</p>
+{{ next_button }}
+{{ endblock }}

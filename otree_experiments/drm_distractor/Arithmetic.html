@@ -1,0 +1,25 @@
+{{ block title }}Arithmetic{{ endblock }}
+{{ block content }}
+<p>Solve as many problems as you can. Type the answer and press Enter. The page continues automatically when the time is over.</p>
+<div style="font-size:36px;margin:20px 0" id="problem">…</div>
+<input type="text" id="answer" inputmode="numeric" autocomplete="off" class="form-control" style="max-width:200px;font-size:24px">
+<p class="mt-2">Correct so far: <b id="correct">0</b></p>
+<script>
+  function liveRecv(data) {
+    document.getElementById('problem').textContent = data.problem + ' = ?';
+    document.getElementById('correct').textContent = data.correct;
+    const box = document.getElementById('answer');
+    box.value = '';
+    box.focus();
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    liveSend({type: 'start'});
+    document.getElementById('answer').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();   // Enter must not submit the whole page
+        liveSend({type: 'answer', value: this.value});
+      }
+    });
+  });
+</script>
+{{ endblock }}

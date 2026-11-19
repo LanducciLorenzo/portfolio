@@ -1,0 +1,10 @@
+{{ block title }}Round {{ player.round_number }} of {{ C.NUM_ROUNDS }}{{ endblock }}
+{{ block content }}
+<p>Your endowment this round: <b>{{ player.endowment }}</b> points.</p>
+{{ if show_others }}
+<p>The other members of your group received: {{ for e in others_endowments }}<b>{{ e }}</b> {{ endfor }}points.</p>
+{{ endif }}
+{{ formfields }}
+<p><small>Please decide within {{ C.DECISION_TIMEOUT }} seconds. If you do not decide, your contribution will be 0.</small></p>
+{{ next_button }}
+{{ endblock }}

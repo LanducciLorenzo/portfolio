@@ -1,0 +1,26 @@
+material,rank,partner,country,share
+Lithium,1,CL,Chile,0.496404496053357
+Lithium,2,CN,China,0.2330356528463074
+Lithium,3,US,United States,0.1278319292597099
+Lithium,4,AR,Argentina,0.05916167900930049
+Lithium,5,GB,United Kingdom,0.03500451644857376
+Rare earths,1,CN,China,0.3343052323430009
+Rare earths,2,NO,Norway,0.16682213704486418
+Rare earths,3,JP,Japan,0.12443027791254485
+Rare earths,4,RU,Russia,0.10594738510764463
+Rare earths,5,MY,Malaysia,0.09367996966141943
+Cobalt,1,US,United States,0.20370510210611872
+Cobalt,2,CN,China,0.19302639823992146
+Cobalt,3,CA,Canada,0.1811360827037272
+Cobalt,4,JP,Japan,0.08721338004922752
+Cobalt,5,GB,United Kingdom,0.08221055846544241
+Natural graphite,1,CN,China,0.43491936415121824
+Natural graphite,2,MG,Madagascar,0.12814451524570805
+Natural graphite,3,BR,Brazil,0.10029360799115988
+Natural graphite,4,KR,South Korea,0.09524848783700994
+Natural graphite,5,MZ,Mozambique,0.07212494166024833
+Permanent magnets,1,CN,China,0.8914292195803412
+Permanent magnets,2,CH,Switzerland,0.022785134802156066
+Permanent magnets,3,US,United States,0.02224948788237341
+Permanent magnets,4,PH,Philippines,0.019991041598556077
+Permanent magnets,5,VN,Vietnam,0.011193302667064971

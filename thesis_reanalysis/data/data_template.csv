@@ -1,0 +1,2 @@
+id,paivio_visivo,recall_hit_immagini,recall_hit_concrete,recall_hit_astratte,recall_lure_immagini,recall_lure_concrete,recall_lure_astratte,recog_hit_immagini,recog_hit_concrete,recog_hit_astratte,recog_lure_immagini,recog_lure_concrete,recog_lure_astratte,recog_fa_immagini,recog_fa_concrete,recog_fa_astratte
+1,52.5,0.72,0.60,0.49,0.2,0.2,0.4,0.933,0.8,0.733,0.2,0.6,0.8,0.0,0.0,0.1

@@ -1,0 +1,10 @@
+{{ block title }}Instructions{{ endblock }}
+{{ block content }}
+<p>You are in a group of {{ C.PLAYERS_PER_GROUP }} participants. The game lasts {{ C.NUM_ROUNDS }} rounds.</p>
+<p>In each round you receive an endowment of points. You decide how many points to contribute to a <b>group project</b> and how many to keep for yourself.</p>
+<p>All contributions in your group are added up, multiplied by {{ C.MULTIPLIER }}, and divided <b>equally</b> among all {{ C.PLAYERS_PER_GROUP }} members, whatever each member contributed.</p>
+<p><b>Your earnings in a round</b> = points you keep + your share of the group project.</p>
+<p>Each point you contribute gives {{ C.MPCR }} points back to you, and {{ C.MPCR }} points to each other member of your group.</p>
+<p>Your earnings from all rounds are added up and paid at the end.</p>
+{{ next_button }}
+{{ endblock }}
